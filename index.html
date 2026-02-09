@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ID Card Flip</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: white;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-family: Arial, sans-serif;
+    }
+
+    .container {
+      perspective: 1200px;
+    }
+
+    .card {
+      width: 280px;
+      height: 450px;
+      position: relative;
+      transform-style: preserve-3d;
+      transition: transform 0.8s ease-in-out;
+    }
+
+    .card.flip {
+      transform: rotateY(180deg);
+    }
+
+    .card-face {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      backface-visibility: hidden;
+      border-radius: 18px;
+      overflow: hidden;
+      border: 2px solid black;
+      background: white;
+    }
+
+    .card-face img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .back {
+      transform: rotateY(180deg);
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="container">
+    <div class="card" id="card">
+      <div class="card-face front">
+        <img src="front.jpg" alt="Front Side">
+      </div>
+      <div class="card-face back">
+        <img src="back.jpg" alt="Back Side">
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const card = document.getElementById("card");
+
+    let startX = 0;
+    let endX = 0;
+
+    card.addEventListener("touchstart", e => {
+      startX = e.touches[0].clientX;
+    });
+
+    card.addEventListener("touchend", e => {
+      endX = e.changedTouches[0].clientX;
+      handleSwipe();
+    });
+
+    card.addEventListener("mousedown", e => {
+      startX = e.clientX;
+    });
+
+    card.addEventListener("mouseup", e => {
+      endX = e.clientX;
+      handleSwipe();
+    });
+
+    function handleSwipe() {
+      if (Math.abs(endX - startX) > 50) {
+        card.classList.toggle("flip");
+      }
+    }
+  </script>
+
+</body>
+</html>
